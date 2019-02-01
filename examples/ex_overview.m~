@@ -1,0 +1,37 @@
+clear; clc; close all;
+%% Optimization problem
+% min_{x,r} r
+% s.t.  prob_w( x-r <= w <= x+r ) >= 1 - epsilon
+% finding the shortest segment (center x, radius r) to cover
+% 1-epsilon portion of uncertain variable w
+
+%% Settings for ConvertChanceConstraint (CCC)
+% scenario approach
+ops.method = 'scenario approach'; ops.type = 'convex';
+% sample average approximation
+ops.method = 'sample average approximation'; ops.type = 'sampling and discarding';
+% convex approximation
+ops.method = 'convex approximation'; ops.type = 'markov bound';
+% robust counterpart
+ops.method = 'robust counterpart'; ops.type = 'ball-box';
+
+%% Settings for the Data
+N = 100; epsilon = 0.05;
+wdata = normrnd(0,1,[1,N]);
+wtest = normrnd(0,1,[1,10^4]);
+
+%% Problem formulation
+sdpvar x r w
+obj = r;
+inner_constr = [x-r <= w <= x+r];
+
+%% Solving chance constrained problem using CCC
+% conver
+chance_constr_opt = prob(inner_constr,w, epsilon, wdata, ops);
+sol = optimize(chance_constr_opt, obj);
+xopt = value(x); ropt1 = value(r);
+disp(xopt); disp(ropt);
+disp(['Objective value: ', num2str(value(obj))]);
+% evaulate out-of-sample violation probability
+epsilon_empirical = check_violation_prob(constr,w,wtest);
+disp(['Out of sample violation probability : ', num2str(epsilon_empirical)]);
