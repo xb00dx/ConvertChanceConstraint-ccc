@@ -25,7 +25,8 @@ constr = [x-r <= w <= x+r];
 %% Solving chance constrained problem using Scenario Approach
 % Usage 1: build an optimization model for one time, solve it for one time
 chance_constr_opt = prob(constr, w, 0.05, wdata, ops);
-sol1 = optimize( sdpvar(chance_constr_opt) >= 0, obj);
+% sol1 = optimize( sdpvar(chance_constr_opt) >= 0, obj);
+sol1 = optimize( chance_constr_opt, obj);
 % sol1 = optimize( chance_constr_opt, obj);
 xopt1 = value(x); ropt1 = value(r);
 disp(xopt1); disp(ropt1);
@@ -33,7 +34,9 @@ disp(['Objective value: ', num2str(value(obj))]);
 % evaulate out-of-sample violation probability
 eps_ofs1 = check_violation_prob(constr, w, wtest, ops);
 disp(['Out of Sample violation prob 1: ', num2str(eps_ofs1)]);
-
+constraints.det = [];
+constraints.prob = chance_constr_opt;
+support_scenarios = find_support_scenarios(constraints, obj, wdata, ops);
 
 % 
 % %% Solving chance constrained problem using Scenario Approach

@@ -9,8 +9,9 @@ scdim = ndims(wdata);
 N = size(wdata,scdim);
 
 assert( isfield(constraints, 'prob') ); 
-constr_prob = [sdpvar(constraints.prob) >= 0];
-assert(size(constr_prob,2) == N); 
+constr_prob = constraints.prob;
+assert(length(constr_prob) == N); 
+constr_prob0 = constr_prob;
 
 constr_det = [];
 if isfield(constraints, 'det')
@@ -18,36 +19,37 @@ if isfield(constraints, 'det')
 end
 
 % solve the problem for the first time 
-status = optimize([constr_det, constr_prob], objective);
+status = optimize([constr_det; constr_prob0], objective);
 % assert( status.if)
+obj0 = value(objective);
+support_scenario_candidates = [];
+for i = 1:N
+    if norm( dual( constr_prob0(i) ), inf ) > 0
+        support_scenario_candidates = [support_scenario_candidates i];
+    end
+end
 
 %% Using Definition for convex problems:
 % removal changes the optimal solution
 tic;
 switch lower(ops.type)
     case 'convex'
-        sc_indices = get_sc_convex(om_para, wdata, scdim, obj_index, sol0);
-        support_scenarios = aux.extract_dimdata(wdata, scdim, sc_indices);
-        
-    case 'non-convex'
-%         sc_indices = get_sc_convex(om_para, wdata, scdim, obj_index, obj0);
-        sc_indices = get_sc_nonconvex(om_para, wdata, scdim, obj_index, sol0);
-        n_sc = length(sc_indices);
-        assert(n_sc >= 1); 
-        ind_test = [sc_indices; repmat(sc_indices(1), N-n_sc, 1)];
-        wdata_test = aux.extract_dimdata(wdata, scdim, ind_test);
-        [sol_test, status_test,~,~,~] = om_para{ wdata_test };
-        assert( status_test == 0 );
-        obj_test = sol_test{ obj_index };
-        if obj_test < (obj0-10^(-6))
-            disp('need more calculations for non-convex problems');
-            disp([num2str(obj_test),'<',num2str(obj0)]);
-            error('need to figure out a smart algorithm for min-support sets');
-        elseif obj_test > (obj0+10^(-6))
-            error('obj value increases with less scenarios!');
-        else
-            support_scenarios = aux.extract_dimdata(wdata, scdim, sc_indices);
+        sc_indices = [];
+        for idx = 1:length(support_scenario_candidates)
+            objectivei = objective;
+            constr_probi = constr_prob;
+            constr_probi(support_scenario_candidates(idx)) = [];
+            status = optimize([constr_det, constr_probi], objectivei);
+            % assert( status.if)
+            obji = value(objectivei);
+            assert( (obji-obj0) <= 1e-4 );
+            if (obj0 - obji) >= 1e-4 
+                sc_indices = [sc_indices; support_scenario_candidates(idx)];
+            end
         end
+        support_scenarios = aux.extract_dimdata(wdata, scdim, sc_indices);    
+    case 'non-convex'
+      error('not implemented yet');
     otherwise
         error('problem not convex or non-convex!');
 end

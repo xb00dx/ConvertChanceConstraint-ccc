@@ -16,7 +16,7 @@ for i = 1:N
         disp(['scenario ', num2str(i)]);
     end
     data_i = extract_data(data,scdim,i);
-    F_sa = [F_sa replace(F, w, data_i)];
+    F_sa = [F_sa sdpvar(replace(F, w, data_i)) >= 0];
 end
 
 end
