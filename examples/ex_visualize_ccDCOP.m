@@ -1,6 +1,6 @@
 clear; clc; close all
 
-using_cluster = 2;
+using_cluster = 0;
 if using_cluster == 1
     disp('on ada cluster');
     addpath('../code/'  );
@@ -19,8 +19,8 @@ casename = 'ex_case3sc';
 mpc = loadcase(casename);
 const = ex_extract_ccDCOPF(mpc);
 
-resultpath = '../results/ccDCOPF/';
-datapath = ['../data/ccDCOPF/',casename,'/'];
+datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
+resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
 ops.verbose = 0;
 
 %% For
@@ -38,7 +38,7 @@ testdata = load([datapath,casename,'-testdata-N=',num2str(N),'.mat'] );
 % u_g1 = const.g_u(1); l_g1 = const.g_l(1);
 % n_g1 = 2^9; n_eta1 = 2^9;
 % u_g1 = 340; l_g1 = 240;
-n_g1 = 3^4; n_eta1 = 3^4;
+% n_g1 = 3^4; n_eta1 = 3^4;
 u_g1 = 290; l_g1 = 270;
 d_g1 = (u_g1-l_g1)/(n_g1-1);
 d_eta1 = (1-0)/(n_eta1-1);
@@ -60,4 +60,4 @@ grid.epsilon = epsilon;
 grid.g1_grid = g1_grid; grid.eta1_grid = eta1_grid;
 grid.g1 = g1; grid.eta1 = eta1;
 save([resultpath,casename,'-feasibility-grid-N=',num2str(N),'-',num2str(n_g1*n_eta1),'points.mat'],'grid');
-% surf(g1_grid, eta1_grid, epsilon)
+surf(g1_grid, eta1_grid, epsilon)

@@ -15,11 +15,11 @@ constr_prob0 = constr_prob;
 
 constr_det = [];
 if isfield(constraints, 'det')
-    det_constr = constraints.det;
+    constr_det = constraints.det;
 end
 
 % solve the problem for the first time 
-status = optimize([constr_det; constr_prob0], objective);
+status = optimize([constr_det; constr_prob0], objective, ops.yalmipopt);
 % assert( status.if)
 obj0 = value(objective);
 support_scenario_candidates = [];
@@ -39,7 +39,7 @@ switch lower(ops.type)
             objectivei = objective;
             constr_probi = constr_prob;
             constr_probi(support_scenario_candidates(idx)) = [];
-            status = optimize([constr_det, constr_probi], objectivei);
+            status = optimize([constr_det, constr_probi], objectivei,ops.yalmipopt);
             % assert( status.if)
             obji = value(objectivei);
             assert( (obji-obj0) <= 1e-4 );

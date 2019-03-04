@@ -41,28 +41,28 @@ nMC = 10;
 ops.beta = 10^(-3);
 
 % casepath = '../testcase/Case5Simons/';
-% casename = 'ex_case3sc';
-casename = 'ex_case24_ieee_rts';
+casename = 'ex_case3sc';
+% casename = 'ex_case24_ieee_rts';
 % casename = 'ex_case30';
 % casename = 'case57';
 % casename = 'ex_case118';
 
-datapath = ['../data/ccDCOPF/',casename,'/'];
-resultpath = '../results/ccDCOPF/';
+datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
+resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
 mpc = loadcase(casename);
 
 %% Extract information from the MPC structure
 const = ex_extract_ccDCOPF(mpc);
 
 %% Settings for CCC
-% epsilons_all = [0.01:0.01:0.05];
+epsilons_all = [0.01:0.01:0.05];
 % epsilons_all = 0;
 % epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.2:0.1:0.4];
 
 % epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.1:0.1:0.3];
-epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
+% epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
 % epsilons_all = [0.3:0.1:0.9];
 % epsilons_all = 0.05;
 for ieps = 1:length(epsilons_all)
