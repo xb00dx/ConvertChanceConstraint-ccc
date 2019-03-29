@@ -39,16 +39,21 @@ end
 using_optimizer = 0; 
 nMC = 10;
 ops.beta = 10^(-3);
-
+% distribution = 'gaussian';
+distribution = 'beta';
 % casepath = '../testcase/Case5Simons/';
-casename = 'ex_case3sc';
-% casename = 'ex_case24_ieee_rts';
+% casename = 'ex_case3sc';
+casename = 'ex_case24_ieee_rts';
 % casename = 'ex_case30';
 % casename = 'case57';
 % casename = 'ex_case118';
 
-datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
-resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
+% datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
+% resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
+
+datapath = ['~/Documents/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
+resultpath = ['~/Documents/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
+
 mpc = loadcase(casename);
 
 %% Extract information from the MPC structure
@@ -73,9 +78,9 @@ ops.epsilon = epsilons_all(ieps);
 
 ops.verbose = 1;
 
-% ops.method = 'scenario approach';
+ops.method = 'scenario approach';
 % ops.method = 'convex approximation';
-ops.method = 'sample average approximation';
+% ops.method = 'sample average approximation';
 % ops.method = 'robust counterpart';
 
 switch ops.method
@@ -143,8 +148,8 @@ constr_inner = [const.g_l <= g + sum(d_err)*eta <= const.g_u;
 
 
 % N_trains = [10:10:100, 200:100:500];
-N_trains = 2^11;
-% N_trains = [10:10:100, 200:100:500];
+% N_trains = 2^11;
+N_trains = [10:10:100];
 % N_trains = 2^9;
 % N_trains = 100;
 % N_trains = [200:100:500];
