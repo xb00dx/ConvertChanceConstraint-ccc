@@ -4,19 +4,42 @@ clc;
 disp('begin to solve the problem');
 opt_yalmip = sdpsettings('usex0',1);
 
-using_cluster = 0;
-if using_cluster == 1
-    disp('on ada cluster');
-    addpath('../code/'  );
-    addpath( genpath('/scratch/user/xbgeng/libraries/') );
-    % addpath('~/github-tamu/ccc/code/');
-    addpath('/general/software/x86_64/easybuild/software/CPLEX/12.6.3-GCCcore-6.3.0/cplex/matlab/x86-64_linux');
-elseif using_cluster == 2
-    disp('on terra cluster');
-    addpath('../code/'  );
-    addpath( genpath('/scratch/user/xbgeng/Libraries/') );
-    addpath('/sw/eb/sw/CPLEX/12.6.3-GCCcore-6.4.0/cplex/matlab/x86-64_linux/');
+%% Overall settings
+using_optimizer = 0; 
+nMC = 10;
+ops.beta = 10^(-3);
+% distribution = 'gaussian';
+distribution = 'beta';
+% casepath = '../testcase/Case5Simons/';
+% casename = 'ex_case3sc';
+casename = 'ex_case24_ieee_rts';
+% casename = 'ex_case30';
+% casename = 'case57';
+% casename = 'ex_case118';
+
+% using_cluster = 'none';
+using_cluster = 'terra';
+
+switch using_cluster
+    case 'none'
+        % datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
+        % resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
+
+        datapath = ['~/Documents/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
+        resultpath = ['~/Documents/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
+    case 'terra'
+        disp('on terra cluster');
+        % addpath('../code/'  );
+        addpath( genpath('/scratch/user/xbgeng/Libraries/') );
+        addpath('/scratch/user/xbgeng/Github/ConvertChanceConstraint-ccc/code/');
+        addpath('/sw/eb/sw/CPLEX/12.6.3-GCCcore-6.3.0/cplex/matlab/x86-64_linux/');
+
+        datapath = ['/scratch/user/xbgeng/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
+        resultpath = ['/scratch/user/xbgeng/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
+    otherwise
+        error('no such cluster option');
 end
+
 yalmip('clear');
 
 if have_fcn('gurobi')
@@ -35,24 +58,6 @@ else
     error('no available solver');
 end
 
-%% Overall settings
-using_optimizer = 0; 
-nMC = 10;
-ops.beta = 10^(-3);
-% distribution = 'gaussian';
-distribution = 'beta';
-% casepath = '../testcase/Case5Simons/';
-% casename = 'ex_case3sc';
-casename = 'ex_case24_ieee_rts';
-% casename = 'ex_case30';
-% casename = 'case57';
-% casename = 'ex_case118';
-
-% datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
-% resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
-
-datapath = ['~/Documents/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
-resultpath = ['~/Documents/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
 
 mpc = loadcase(casename);
 
