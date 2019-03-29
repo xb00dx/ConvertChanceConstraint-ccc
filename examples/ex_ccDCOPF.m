@@ -60,12 +60,12 @@ mpc = loadcase(casename);
 const = ex_extract_ccDCOPF(mpc);
 
 %% Settings for CCC
-epsilons_all = [0.01:0.01:0.05];
+% epsilons_all = [0.01:0.01:0.05];
 % epsilons_all = 0;
 % epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.2:0.1:0.4];
 
-% epsilons_all = [0.01:0.01:0.1];
+epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.1:0.1:0.3];
 % epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
 % epsilons_all = [0.3:0.1:0.9];
@@ -78,8 +78,8 @@ ops.epsilon = epsilons_all(ieps);
 
 ops.verbose = 1;
 
-ops.method = 'scenario approach';
-% ops.method = 'convex approximation';
+% ops.method = 'scenario approach';
+ops.method = 'convex approximation';
 % ops.method = 'sample average approximation';
 % ops.method = 'robust counterpart';
 
@@ -149,7 +149,7 @@ constr_inner = [const.g_l <= g + sum(d_err)*eta <= const.g_u;
 
 % N_trains = [10:10:100, 200:100:500];
 % N_trains = 2^11;
-N_trains = [10:10:100];
+N_trains = [10:10:100,2.^(7:11)];
 % N_trains = 2^9;
 % N_trains = 100;
 % N_trains = [200:100:500];
