@@ -5,7 +5,8 @@ eps = NaN; tol = 1e-4;
 % assume the last dim is the data
 datdim = ndims( data );
 
-assert( length(u) == size(data,1) );
+assert( size(u,1) == size(data,1) );
+
 % n_constr = size(constr,1);
 N = size(data,datdim);
 if ops.verbose

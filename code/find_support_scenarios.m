@@ -46,6 +46,7 @@ switch lower(ops.type)
             if (obj0 - obji) >= 1e-4 
                 sc_indices = [sc_indices; support_scenario_candidates(idx)];
             end
+            clear objectivei; clear constr_probi;
         end
         support_scenarios = aux.extract_dimdata(wdata, scdim, sc_indices);    
     case 'non-convex'
@@ -55,5 +56,10 @@ switch lower(ops.type)
 end
 t_sc = toc;
 disp([num2str(t_sc),' seconds to find support scenarios']);
+
+disp('double checking the correctness of results');
+status = optimize([constr_det, constr_prob(sc_indices)], objective);
+assert( abs(value(objective)-obj0) <= 1e-4 );
+disp('correct');
 end
 
