@@ -15,31 +15,39 @@ constr_prob0 = constr_prob;
 
 constr_det = [];
 if isfield(constraints, 'det')
-    det_constr = constraints.det;
+    constr_det = constraints.det;
 end
 
 % solve the problem for the first time 
-status = optimize([constr_det; constr_prob0], objective);
+status = optimize([constr_det; constr_prob0], objective, ops.yalmipopt);
 % assert( status.if)
 obj0 = value(objective);
 support_scenario_candidates = [];
 for i = 1:N
-    if norm( dual( constr_prob0(i) ), inf ) > 0
+    mu = dual( constr_prob0(i) );
+    if ~all(~isnan(mu)) 
+        error('NaN dual variable values');
+    end
+    if norm( mu, inf ) > 0
         support_scenario_candidates = [support_scenario_candidates i];
     end
 end
-
+disp(length(support_scenario_candidates));
 %% Using Definition for convex problems:
 % removal changes the optimal solution
 tic;
 switch lower(ops.type)
     case 'convex'
         sc_indices = [];
+        
         for idx = 1:length(support_scenario_candidates)
+            if ops.verbose
+                disp(['Solving ',num2str(idx),' out of ',num2str(length(support_scenario_candidates)),' scenario problems.'])
+            end
             objectivei = objective;
             constr_probi = constr_prob;
             constr_probi(support_scenario_candidates(idx)) = [];
-            status = optimize([constr_det, constr_probi], objectivei);
+            status = optimize([constr_det, constr_probi], objectivei, ops.yalmipopt);
             % assert( status.if)
             obji = value(objectivei);
             assert( (obji-obj0) <= 1e-4 );
