@@ -4,19 +4,42 @@ clc;
 disp('begin to solve the problem');
 opt_yalmip = sdpsettings('usex0',1);
 
-using_cluster = 0;
-if using_cluster == 1
-    disp('on ada cluster');
-    addpath('../code/'  );
-    addpath( genpath('/scratch/user/xbgeng/libraries/') );
-    % addpath('~/github-tamu/ccc/code/');
-    addpath('/general/software/x86_64/easybuild/software/CPLEX/12.6.3-GCCcore-6.3.0/cplex/matlab/x86-64_linux');
-elseif using_cluster == 2
-    disp('on terra cluster');
-    addpath('../code/'  );
-    addpath( genpath('/scratch/user/xbgeng/Libraries/') );
-    addpath('/sw/eb/sw/CPLEX/12.6.3-GCCcore-6.4.0/cplex/matlab/x86-64_linux/');
+%% Overall settings
+using_optimizer = 0; 
+nMC = 10;
+ops.beta = 10^(-3);
+% distribution = 'gaussian';
+distribution = 'beta';
+% casepath = '../testcase/Case5Simons/';
+% casename = 'ex_case3sc';
+casename = 'ex_case24_ieee_rts';
+% casename = 'ex_case30';
+% casename = 'case57';
+% casename = 'ex_case118';
+
+% using_cluster = 'none';
+using_cluster = 'terra';
+
+switch using_cluster
+    case 'none'
+        % datapath = ['~/Documents/gdrive/CCC-Working/Data/',casename,'/'];
+        % resultpath = ['~/Documents/gdrive/CCC-Working/Results/',casename,'/'];
+
+        datapath = ['~/Documents/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
+        resultpath = ['~/Documents/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
+    case 'terra'
+        disp('on terra cluster');
+        % addpath('../code/'  );
+        addpath( genpath('/scratch/user/xbgeng/Libraries/') );
+        addpath('/scratch/user/xbgeng/Github/ConvertChanceConstraint-ccc/code/');
+        addpath('/sw/eb/sw/CPLEX/12.6.3-GCCcore-6.3.0/cplex/matlab/x86-64_linux/');
+
+        datapath = ['/scratch/user/xbgeng/gdrive/Results-cc-DCOPF/data/',casename,'/',distribution,'/'];
+        resultpath = ['/scratch/user/xbgeng/gdrive/Results-cc-DCOPF/results/',casename,'/',distribution,'/'];
+    otherwise
+        error('no such cluster option');
 end
+
 yalmip('clear');
 
 if have_fcn('gurobi')
@@ -35,20 +58,7 @@ else
     error('no available solver');
 end
 
-%% Overall settings
-using_optimizer = 0; 
-nMC = 10;
-ops.beta = 10^(-3);
 
-% casepath = '../testcase/Case5Simons/';
-% casename = 'ex_case3sc';
-casename = 'ex_case24_ieee_rts';
-% casename = 'ex_case30';
-% casename = 'case57';
-% casename = 'ex_case118';
-
-datapath = ['../data/ccDCOPF/',casename,'/'];
-resultpath = '../results/ccDCOPF/';
 mpc = loadcase(casename);
 
 %% Extract information from the MPC structure
@@ -60,9 +70,9 @@ const = ex_extract_ccDCOPF(mpc);
 % epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.2:0.1:0.4];
 
-% epsilons_all = [0.01:0.01:0.1];
+epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.1:0.1:0.3];
-epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
+% epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
 % epsilons_all = [0.3:0.1:0.9];
 % epsilons_all = 0.05;
 for ieps = 1:length(epsilons_all)
@@ -74,8 +84,8 @@ ops.epsilon = epsilons_all(ieps);
 ops.verbose = 1;
 
 % ops.method = 'scenario approach';
-% ops.method = 'convex approximation';
-ops.method = 'sample average approximation';
+ops.method = 'convex approximation';
+% ops.method = 'sample average approximation';
 % ops.method = 'robust counterpart';
 
 switch ops.method
@@ -143,8 +153,8 @@ constr_inner = [const.g_l <= g + sum(d_err)*eta <= const.g_u;
 
 
 % N_trains = [10:10:100, 200:100:500];
-N_trains = 2^11;
-% N_trains = [10:10:100, 200:100:500];
+% N_trains = 2^11;
+N_trains = [10:10:100,2.^(7:11)];
 % N_trains = 2^9;
 % N_trains = 100;
 % N_trains = [200:100:500];
