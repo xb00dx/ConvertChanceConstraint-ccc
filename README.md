@@ -20,8 +20,9 @@ If you find *ccc* useful in your work, we kindly request that you cite the follo
 
 ## Installation
 1. Install [Matlab](https://www.mathworks.com/products/matlab.html), the latest version is suggested.
-2. Install [YALMIP](https://yalmip.github.io/), please follow the instructions guide [here](https://yalmip.github.io/tutorial/installation/)
-	- the MPT toolbox is suggested, since it might be used in some robust optimization related methods.
+2. Install [YALMIP](https://yalmip.github.io/), please follow the instructions guide [here](https://yalmip.github.io/tutorial/installation/)， the latest version is suggested.
+	- [MPT 3.0] will be installed together with YALMIP
+	- If you have MPT installed, make sure that you delete the YALMIP distribution residing inside MPT and remove the old path definitions. Better, don’t install YALMIP manually but use MPTs toolbox manager.
 	- [Getting started](https://yalmip.github.io/tutorial/basics/) with YALMIP
 3. Add the core functions to Matlab path
 	- by *manually* adding the `ConvertChanceConstraint-ccc` or `ConvertChanceConstraint-ccc/code/` folder to Matlab path (by clicking `Home` --> `Set Path` --> `Add with subfolders` --> choose `ConvertChanceConstraint-ccc/code/`.
@@ -38,3 +39,9 @@ If you find *ccc* useful in your work, we kindly request that you cite the follo
 - Core functions
 - Illustrative examples
 - Detailed documentation and its outline
+
+*ccc is designed for prototyping or medium-scale problems*, it could be very slow when handling large-scale optimization problems.
+
+**More information can be found on the [author's website](xb00dx.github.io).**
+
+![word-cloud](./figures/wordcloud-stochastic.png)
