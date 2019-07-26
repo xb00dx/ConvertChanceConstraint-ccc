@@ -8,6 +8,7 @@ function ex_1DPC_gaussian()
 %   This file is part of CCC.
 %   Covered by the 3-clause BSD License (see LICENSE file for details).
 %   See https://github.com/xb00dx/ConvertChanceConstraint-ccc for more info.
+%   Last Edited: July.26.2019
 
 %% 1-dim Probabilistic Point Covering
 % \min_{x,r} r \\
@@ -43,6 +44,7 @@ end
 xlabel('center: x'), ylabel('radius: r'),
 legend(legend_str,'Location','best'),
 title('probabilistic point covering')
+hold off
 % print(feas_region,'-depsc','-painters','1d_pointcovering_feasibleregion.eps')
 % print(feas_region,'-dsvg','1d_pointcovering_feasibleregion.svg')
 % save('1d_pointcovering_feasibleregion.mat','xs','rs','epsilons','rhos');
