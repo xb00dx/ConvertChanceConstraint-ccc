@@ -20,7 +20,8 @@ dist = makedist('Normal','mu',0,'sigma',1);
 
 %% Solve PPC via the Scenario Approach
 % settings
-epsilon = 5e-2; beta = 1e-3; d = 2;
+epsilon = 5e-2; beta = 1e-3;
+d = 2; % two decision variable (x,r), also this problem is fully-supported
 ops.method = 'scenario approach';
 ops.verbose = 0; % debug setting
 % prepare data

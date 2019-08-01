@@ -5,15 +5,16 @@ beta = 10^(-3);
 
 % casename = 'ex_case3sc';
 casename = 'ex_case24_ieee_rts';
-
-resultpath = './ccDCOPF/';
+% resultpath = './ccDCOPF/';
+resultpath = '~/Documents/gdrive/Results-cc-DCOPF/results/ex_case24_ieee_rts/beta/';
 
 % resultpath = './temp/';
 % method = 'convex approximation';
 method = 'scenario approach';
 
 % Ns = [10:10:100,200:100:500];
-Ns = 2.^(4:10);
+% Ns = 2.^(4:10);
+Ns = [10:10:100,2.^(7:11)];
 
 nMC = 10;
 eps = zeros(length(Ns), nMC);
@@ -47,7 +48,8 @@ save([casename,'-',method,'-results.mat'], 'Ns', 'eps_empirical', 'obj', 'eps_pr
 
 % calculate lower bounds
 % epsilons = 0.01:0.01:0.1; % case 3
-epsilons = 0.01:0.01:0.3; % case 24
+% epsilons = 0.01:0.01:0.3; % case 24
+epsilons = 0.01:0.01:0.1; % case 24
 obj_low = zeros(length(epsilons),1);
 for i = 1:length(epsilons)
     for iN = 1:length(iN)

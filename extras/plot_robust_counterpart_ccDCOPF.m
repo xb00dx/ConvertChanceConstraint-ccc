@@ -7,7 +7,8 @@ beta = 10^(-3);
 % resultpath = './ccDCOPF/';
 
 casename = 'ex_case24_ieee_rts';
-resultpath = './ccDCOPF/';
+% resultpath = './ccDCOPF/';
+resultpath = '~/Documents/gdrive/Results-cc-DCOPF/results/ex_case24_ieee_rts/beta/';
 
 method = 'robust counterpart';
 % type = 'box';
@@ -18,7 +19,8 @@ nMC = 10;
 % N = 100;
 N = 2048;
 
-eps = 0;
+% eps = 0;
+eps = 0.01;
 eps_empirical_box = zeros(length(eps), nMC);
 obj_box = zeros(length(eps), nMC);
 for ieps = 1:length(eps)
@@ -30,7 +32,9 @@ for ieps = 1:length(eps)
     end
 end
 
-eps = 0.1:0.1:0.9;
+% eps = 0.1:0.1:0.9;
+eps = 0.01:0.01:0.1;
+% eps = 0.06:0.01:0.1;
 eps_empirical_ball = zeros(length(eps), nMC);
 obj_ball = zeros(length(eps), nMC);
 for ieps = 1:length(eps)
@@ -71,6 +75,7 @@ save([casename,'-',method,'-results-N=',num2str(N),'.mat'],...
 %     'eps', 'eps_empirical_box','obj_box','eps_empirical_ballbox','obj_ballbox',...
 %     'eps_empirical_ball','obj_ball', 'eps_empirical_budget','obj_budget');
 
+return
 % calculate lower bounds
 lb = load('ex_case3sc-obj-lower-bound');
 

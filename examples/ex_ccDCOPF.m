@@ -17,8 +17,8 @@ casename = 'ex_case24_ieee_rts';
 % casename = 'case57';
 % casename = 'ex_case118';
 
-% using_cluster = 'none';
-using_cluster = 'terra';
+using_cluster = 'none';
+% using_cluster = 'terra';
 
 switch using_cluster
     case 'none'
@@ -70,11 +70,11 @@ const = ex_extract_ccDCOPF(mpc);
 % epsilons_all = [0.01:0.01:0.1];
 % epsilons_all = [0.2:0.1:0.4];
 
-epsilons_all = [0.01:0.01:0.1];
-% epsilons_all = [0.1:0.1:0.3];
+% epsilons_all = [0.01:0.01:0.1];
+% epsilons_all = [0.1:(-0.01):0.01];
 % epsilons_all = [0.09:0.01:0.1, 0.2:0.1:0.3];
 % epsilons_all = [0.3:0.1:0.9];
-% epsilons_all = 0.05;
+epsilons_all = 0.07;
 for ieps = 1:length(epsilons_all)
 
 % common settings
@@ -84,9 +84,9 @@ ops.epsilon = epsilons_all(ieps);
 ops.verbose = 1;
 
 % ops.method = 'scenario approach';
-ops.method = 'convex approximation';
+% ops.method = 'convex approximation';
 % ops.method = 'sample average approximation';
-% ops.method = 'robust counterpart';
+ops.method = 'robust counterpart';
 
 switch ops.method
     case 'scenario approach'
@@ -105,9 +105,9 @@ switch ops.method
 %         ops.support.radius =...
 %             norminv( (1-ops.epsilon/2)*ones(const.nload,1),zeros(const.nload,1),const.d_hat*0.05);
 %       ops.type = 'box';
-%         ops.type = 'ball';
-          ops.type = 'ball-box';
-%          ops.type = 'budget';
+        ops.type = 'ball';
+%         ops.type = 'ball-box';
+%         ops.type = 'budget';
         disp(ops.type);
 %         opt_yalmip = sdpsettings(opt_yalmip,'robust.lplp','duality');
 %        ops.reformulate = 'automatic'; % using the auto robust optimization of YALMIP
@@ -152,10 +152,10 @@ constr_inner = [const.g_l <= g + sum(d_err)*eta <= const.g_u;
 % eps_test = zeros(nMC, 14);
 
 
-% N_trains = [10:10:100, 200:100:500];
+% N_trains = [10:10:100];
 % N_trains = 2^11;
-N_trains = [10:10:100,2.^(7:11)];
-% N_trains = 2^9;
+% N_trains = [10:10:100,2.^(7:11)];
+N_trains = 2^11;
 % N_trains = 100;
 % N_trains = [200:100:500];
 % N_trains = 2.^(11:13);

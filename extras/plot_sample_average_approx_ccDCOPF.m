@@ -3,11 +3,12 @@ clear; clc; close all;
 fig_size = [10,10,800,400];
 beta = 10^(-3);
 
-casename = 'ex_case3sc';
-resultpath = './ccDCOPF/';
+% casename = 'ex_case3sc';
+% resultpath = './ccDCOPF/';
 
-% casename = 'ex_case24_ieee_rts';
+casename = 'ex_case24_ieee_rts';
 % resultpath = './temp/';
+resultpath = '~/Documents/gdrive/Results-cc-DCOPF/results/ex_case24_ieee_rts/beta/';
 
 method = 'sample average approximation';
 % type = 'box';
@@ -15,9 +16,10 @@ type = 'sampling and discarding';
 
 nMC = 10;
 % Ns = [10:10:100,200:100:500];
-N = 100;
+N = 2048;
 
-epsilons = [0.01:0.01:0.1,0.2:0.1:0.9];
+% epsilons = [0.01:0.01:0.1,0.2:0.1:0.9];
+epsilons = [0.01:0.01:0.1];
 eps_empirical = zeros(length(epsilons), nMC);
 obj = zeros(length(epsilons), nMC);
 for ieps = 1:length(epsilons)

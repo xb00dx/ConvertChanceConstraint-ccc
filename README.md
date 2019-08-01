@@ -42,6 +42,6 @@ If you find *ccc* useful in your work, we kindly request that you cite the follo
 
 *ccc is designed for prototyping or medium-scale problems*, it could be very slow when handling large-scale optimization problems.
 
-**More information can be found on the [author's website](xb00dx.github.io).**
+**More information can be found on the [author's website](https://xb00dx.github.io/).**
 
 ![word-cloud](./figures/wordcloud-stochastic.png)
