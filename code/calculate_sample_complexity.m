@@ -39,7 +39,12 @@ function [N,k] = calculate_sample_complexity(d, epsilon, beta, optin)
 %   [Campi2009] M. C. Campi, S. Garatti, and M. Prandini, "The scenario approach
 %       for systems and control design," Annual Reviews in Control, vol. 33,
 %       no. 2, pp. 149-157, 2009.
-% 
+%   [Campi2016] Campi, MC, and S Garatti. “Wait-and-Judge Scenario Optimization.”
+%       Mathematical Programming, 2016, 1–35.
+%   [Campi2019] Campi, Marco C, Simone Garatti, and Federico Alessandro Ramponi. 
+%       “A General Scenario Theory for Non-Convex Optimization and Decision Making.”
+%       IEEE Transactions on Automatic Control, 2019.
+%   
 %   ConvertChanceConstraint (CCC)
 %   Copyright (c) 2018-2019
 %   by X.Geng
@@ -52,9 +57,9 @@ function [N,k] = calculate_sample_complexity(d, epsilon, beta, optin)
 
 switch optin
     case 'exact'
-        opt = 'Campi2008';
+        ref = 'Campi2008';
     case 'fast'
-        opt = 'Campi2009';
+        ref = 'Campi2009';
     case 'posterior'
 %         opt = ;
     case 'non-convex'
@@ -62,7 +67,7 @@ switch optin
 %     case 
 %         opt = ;
     otherwise
-        opt = optin;
+        ref = optin;
 end
 
 %% Initialization
