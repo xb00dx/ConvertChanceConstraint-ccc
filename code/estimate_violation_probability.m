@@ -30,7 +30,7 @@ if ~isfield(ops,'verbose')
     ops.verbos= 1;
 end
 if ~isfield(ops,'tol')
-    tol = 1e-4; % this might cause numerical problems 
+    tol = 1e-9; % this might cause numerical problems 
 else
     tol = ops.tol;
 end 

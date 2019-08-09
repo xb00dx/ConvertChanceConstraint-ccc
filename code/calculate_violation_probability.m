@@ -9,7 +9,7 @@ function epsilon = calculate_violation_probability(N,k,beta,opt)
 %       INPUTS : explain inputs
 %
 %   Outputs (some are optional):
-%       OUTPUTS ： 
+%       OUTPUTS is 
 %
 %   Calling syntax options:
 %       [OUTPUTS] = FUNCTION(INPUTS)
@@ -44,10 +44,10 @@ function epsilon = calculate_violation_probability(N,k,beta,opt)
 %   [Campi2009] M. C. Campi, S. Garatti, and M. Prandini, "The scenario approach
 %       for systems and control design," Annual Reviews in Control, vol. 33,
 %       no. 2, pp. 149-157, 2009.
-%	[Campi2016] Campi, MC, and S Garatti. “Wait-and-Judge Scenario Optimization.”
+%	[Campi2016] Campi, MC, and S Garatti. “Wait-and-Judge Scenario Optimization.�?
 %		Mathematical Programming, 2016, 1–35.
 % 	[Campi2019] Campi, Marco C, Simone Garatti, and Federico Alessandro Ramponi. 
-%		“A General Scenario Theory for Non-Convex Optimization and Decision Making.”
+%		“A General Scenario Theory for Non-Convex Optimization and Decision Making.�?
 %		IEEE Transactions on Automatic Control, 2019.
 % 	
 %   ConvertChanceConstraint (CCC)
@@ -97,8 +97,8 @@ switch ref
         epsilon = p;
     case 'Campi2009'
         epsilon = 2/N*(n-log(beta));
-    case 'Campi2018'
-    	% this part of code can be found in the appendix of [Campi2018]
+    case 'Campi2016'
+    	% this part of code can be found in the appendix of [Campi2016]
 		m = k:1:N;
 		aux1 = sum(triu(log(ones(N-k+1,1)*m),1),2);
 		aux2 = sum(triu(log(ones(N-k+1,1)*(m-k)),1),2);
